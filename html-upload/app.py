@@ -6,14 +6,14 @@ app = Flask(__name__)
 
 @app.route("/API/UploadFile", methods=["POST"])
 def hello():
-    f = request.files.get("file")
-    if f == None:
+    recv_file = request.files.get("file")
+    if recv_file is None:
         return "", 400
     try:
-        f.save(f"./images/{f.filename}")
-    except:
+        recv_file.save(f"./images/{recv_file.filename}")
+    except Exception as e:
         os.mkdir("./images/")
-        f.save(f"./images/{f.filename}")
+        recv_file.save(f"./images/{recv_file.filename}")
     return "OK", 200
 
 
@@ -21,13 +21,14 @@ def hello():
 def Main(filename):
     return send_file(f"./static/{filename}")
 
+
 @app.route("/image/<filename>")
-def ServeImage(filename):
+def serve_image(filename):
     return send_file(f"./images/{filename}")
 
 
 @app.route("/")
-def RootDirectory():
+def root_directory():
     return send_file("./static/main.html")
 
 
