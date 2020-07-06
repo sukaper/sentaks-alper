@@ -3,7 +3,6 @@ import os
 
 app = Flask(__name__)
 
-
 @app.route("/API/UploadFile", methods=["POST"])
 def hello():
     recv_file = request.files.get("file")
@@ -18,7 +17,7 @@ def hello():
 
 
 @app.route("/<filename>")
-def Main(filename):
+def main(filename):
     return send_file(f"./static/{filename}")
 
 
@@ -31,6 +30,3 @@ def serve_image(filename):
 def root_directory():
     return send_file("./static/main.html")
 
-
-if __name__ == "__main__":
-    app.run()
