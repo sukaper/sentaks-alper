@@ -16,10 +16,51 @@ function OnFile(e) {
 }
 
 
+function OnTextChange(e){
+  text = e.target.value
+  // text = document.getElementById("image-text").value
+  SubmitTextToWrite(text)
+}
+
+
+function SubmitTextToWrite(text){
+  let url = `${document.location.origin}/API/write_text`
+  let formData = new FormData()
+  formData.append('text', text)
+  filename = document.getElementById('image').childNodes[0].filename.replace(/-edited.png/g,"")
+  formData.append('filename', filename)
+  formData.append('xpos', parseInt(document.getElementById('text-xpos').value))
+  formData.append('ypos', parseInt(document.getElementById('text-ypos').value))
+  formData.append('size', parseInt(document.getElementById('text-size').value))
+  fetch(url, {
+    method: 'POST',
+    body: formData
+  })
+    .then( response => {
+      // if (response.status !== 200) {
+      //   CreateErrorButton("Error sending text.")
+      //   throw Exception
+      // }
+      response.json()
+    .then( json => {
+      console.log(json)
+      div = document.getElementById('image')
+      div.innerHTML = ""
+      img = document.createElement("img")
+      img.filename = json.filename
+      img.src = `/image/${json.filename}`
+      img.style = "margin:auto; max-height:90vw; max-width 90vm"
+      div.appendChild(img)
+      })
+    })
+    .catch(() => { /* Error. Inform the user */ })
+
+}
+
 
 function SubmitFile(file) {
 
-  let url = `${document.location.origin}/API/UploadFile`
+  let url = `${document.location.origin}/API/upload_file`
   let formData = new FormData()
 
   formData.append('file', file)
@@ -36,6 +77,7 @@ function SubmitFile(file) {
         div = document.getElementById('image')
         div.innerHTML = ""
         img = document.createElement("img")
+        img.filename = file.name
         img.src = `/image/${file.name}`
         img.style = "margin:auto; max-height:90vw; max-width 90vm"
         div.appendChild(img)
@@ -52,6 +94,7 @@ function CreateErrorButton(val) {
   div = document.createElement("div")
   div.classList = ["alert alert-danger"]
   div.textContent = val
+  ErrorDiv.innerHTML = ""
   ErrorDiv.appendChild(div)
 
 }
@@ -68,6 +111,7 @@ function Accepted(fname) {
   }
 }
 function UploadFile(e){
+  document.getElementById("error").innerHTML = ""
   f = document.getElementById("fileinput").files[0]
   if (f == null){
     CreateErrorButton("No image selected.")
@@ -79,3 +123,4 @@ function UploadFile(e){
 }
 document.getElementById("fileinput").addEventListener("change", OnFile)
 document.getElementById("filesubmit").addEventListener("click", UploadFile)
+document.getElementById("image-text").addEventListener("change", OnTextChange)
