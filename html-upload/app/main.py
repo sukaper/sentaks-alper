@@ -1,6 +1,7 @@
 from flask import request, jsonify, make_response, Flask, send_file
 from PIL import Image, ImageDraw, ImageFont
 import os, shutil
+from gunicorn import __version__
 
 app = Flask(__name__)
 
@@ -20,7 +21,6 @@ def API_upload_file():
 
 @app.route("/API/write_text", methods=["POST"])
 def API_write_text():
-
     filename = request.form.get("filename")
     text = request.form.get("text")
     text.replace("\r\n","\n")
@@ -29,7 +29,7 @@ def API_write_text():
     y = int(request.form.get("ypos"))
     image = Image.open('./app/images/'+filename)
     draw = ImageDraw.Draw(image)
-    font = ImageFont.truetype('Roboto-Bold.ttf', size=size)
+    font = ImageFont.truetype('./Roboto-Bold.ttf', size=size)
     color = 'rgb(50, 50, 50)' # black color
     draw.multiline_text((x, y), text, fill=color, font=font)    
     image.save('./app/images/'+filename+'-edited.png')
