@@ -134,9 +134,21 @@ function UploadFile(e) {
 
 
 }
+document.getElementById("dynamic-mode").addEventListener("click",(e) => {
+  if (e.target.checked){
+    document.getElementById("image-text").addEventListener("change", OnTextChange)
+    document.getElementById("text-xpos").addEventListener("change", OnTextChange)
+    document.getElementById("text-ypos").addEventListener("change", OnTextChange)
+    document.getElementById("text-size").addEventListener("change", OnTextChange)
+  } else{
+    document.getElementById("image-text").removeEventListener("change", OnTextChange)
+    document.getElementById("text-xpos").removeEventListener("change", OnTextChange)
+    document.getElementById("text-ypos").removeEventListener("change", OnTextChange)
+    document.getElementById("text-size").removeEventListener("change", OnTextChange)
+
+  }
+})
+
 document.getElementById("fileinput").addEventListener("change", OnFile)
 document.getElementById("filesubmit").addEventListener("click", UploadFile)
-document.getElementById("image-text").addEventListener("change", OnTextChange)
-document.getElementById("text-xpos").addEventListener("change", OnTextChange)
-document.getElementById("text-ypos").addEventListener("change", OnTextChange)
-document.getElementById("text-size").addEventListener("change", OnTextChange)
+document.getElementById("text-submit-button").addEventListener("click", OnTextChange)
