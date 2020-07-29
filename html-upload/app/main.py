@@ -1,5 +1,5 @@
 from flask import request, jsonify, make_response, Flask, send_file
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
 import os, shutil
 from gunicorn import __version__
 
@@ -27,11 +27,14 @@ def API_write_text():
     size = int(request.form.get("size"))
     x = int(request.form.get("xpos"))
     y = int(request.form.get("ypos"))
+    stroke_width = 0
+    if request.form.get("stroke_width",0) !='NaN':
+        stroke_width = int(request.form.get("stroke_width",0))
     image = Image.open('./app/images/'+filename)
     draw = ImageDraw.Draw(image)
     font = ImageFont.truetype('./Roboto-Bold.ttf', size=size)
     color = 'rgb(50, 50, 50)' # black color
-    draw.multiline_text((x, y), text, fill=color, font=font)    
+    draw.multiline_text((x, y), text, fill=color, font=font,stroke_width=stroke_width,stroke_fill='#fff')    
     image.save('./app/images/'+filename+'-edited.png')
     return jsonify({
         'filename':(filename+"-edited.png")

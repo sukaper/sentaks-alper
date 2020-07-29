@@ -31,6 +31,11 @@ function OnTextChange(e) {
     case document.getElementById("text-size"):
       CreateErrorButton("You cannot leave the text size empty.")
       break
+    case document.getElementById("stroke-width"):
+      if (document.getElementById("stroke-check").checked) {
+        CreateErrorButton("You cannot leave the stroke size empty.")
+      }
+      break
   }
   SubmitTextToWrite(document.getElementById("image-text").value)
 }
@@ -45,6 +50,10 @@ function SubmitTextToWrite(text) {
   formData.append('xpos', parseInt(document.getElementById('text-xpos').value))
   formData.append('ypos', parseInt(document.getElementById('text-ypos').value))
   formData.append('size', parseInt(document.getElementById('text-size').value))
+  if (document.getElementById("stroke-check").checked) {
+    formData.append("stroke_width", parseInt(document.getElementById("stroke-width").value == "" ? 0 : document.getElementById("stroke-width").value))
+  }
+  formData.append("stroke_fill", "#fff")
   fetch(url, {
     method: 'POST',
     body: formData
@@ -134,31 +143,29 @@ function UploadFile(e) {
 
 
 }
-if (document.getElementById("dynamic-mode").checked){
-  document.getElementById("image-text").addEventListener("change", OnTextChange)
-  document.getElementById("text-xpos").addEventListener("change", OnTextChange)
-  document.getElementById("text-ypos").addEventListener("change", OnTextChange)
-  document.getElementById("text-size").addEventListener("change", OnTextChange)
-} else{
-  document.getElementById("image-text").removeEventListener("change", OnTextChange)
-  document.getElementById("text-xpos").removeEventListener("change", OnTextChange)
-  document.getElementById("text-ypos").removeEventListener("change", OnTextChange)
-  document.getElementById("text-size").removeEventListener("change", OnTextChange)
 
-}
-document.getElementById("dynamic-mode").addEventListener("click",(e) => {
-  if (e.target.checked){
+function SetDynamic(setting) {
+  if (setting) {
     document.getElementById("image-text").addEventListener("change", OnTextChange)
     document.getElementById("text-xpos").addEventListener("change", OnTextChange)
     document.getElementById("text-ypos").addEventListener("change", OnTextChange)
     document.getElementById("text-size").addEventListener("change", OnTextChange)
-  } else{
+    document.getElementById("stroke-width").addEventListener("change", OnTextChange)
+    document.getElementById("stroke-check").addEventListener("change", OnTextChange)
+  } else {
     document.getElementById("image-text").removeEventListener("change", OnTextChange)
     document.getElementById("text-xpos").removeEventListener("change", OnTextChange)
-    document.getElementById("text-ypos").removeEventListener("change", OnTextChange)
     document.getElementById("text-size").removeEventListener("change", OnTextChange)
+    document.getElementById("text-ypos").removeEventListener("change", OnTextChange)
+    document.getElementById("stroke-width").removeEventListener("change", OnTextChange)
+    document.getElementById("stroke-check").removeEventListener("change", OnTextChange)
 
   }
+}
+
+SetDynamic(document.getElementById("dynamic-mode").checked)
+document.getElementById("dynamic-mode").addEventListener("click", (e) => {
+  SetDynamic(e.target.checked)
 })
 
 document.getElementById("fileinput").addEventListener("change", OnFile)

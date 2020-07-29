@@ -31,16 +31,24 @@
             <div style="display: flex;justify-content: center;">
                 <input class="btn btn-primary" id="fileinput" type="file" id="myFile" name="filename">
                 <input class="btn btn-primary" id="filesubmit" value="Upload" type="submit" style="margin-left: 10px;">
-                <input style="margin-left: 10px;" id="dynamic-mode" title="Toggle dynamic mode"  type="checkbox" checked>
+                <input style="margin-left: 10px;" id="dynamic-mode" title="Toggle dynamic mode" type="checkbox" checked>
             </div>
             <div id="text-controls" style="display: flex;justify-content: center;margin-top: 10px;">
-                <textarea class="md-textarea form-control" id="image-text"></textarea>
+                <textarea class="md-textarea form-control input-control" id="image-text"></textarea>
             </div>
             <div style="display: flex;justify-content: center;">X:
-                <input id="text-xpos" placeholder="x" value="0">Y:
-                <input id="text-ypos" placeholder="y" value="0">Size:
-                <input id="text-size" placeholder="Text size" value="45">
+                <input class="input-control" id="text-xpos" placeholder="x" value="0">Y:
+                <input class="input-control" id="text-ypos" placeholder="y" value="0">Size:
+                <input class="input-control" id="text-size" placeholder="Text size" value="45"><div style="min-width: max-content;">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <input id="stroke-check" type="checkbox">
+                        </span>
+                        <input placeholder="Stroke Width" id="stroke-width" type="text" class="form-control input-control">
+                    </div>
+                </div>
                 <button id="text-submit-button" class="btn btn-primary">Submit Changes</button>
+                
             </div>
             <div id="image" style="display:flex; margin-top: 25px;">
 
