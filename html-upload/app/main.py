@@ -12,9 +12,20 @@ def API_upload_file():
         return "", 400
     try:
         recv_file.save(f"app/images/{recv_file.filename}")
+        img = Image.open(f"app/images/{recv_file.filename}")
+        img.thumbnail((600,400),Image.ANTIALIAS)
+        img.save(f"app/images/{recv_file.filename}")
+        # if img.size[0] >= img.size[1]:
+        #     img.resize(600,-1)
+        # elif img.size[1] >= img.size[1]:
+        #     img.resize(-1,400)
+        
     except FileNotFoundError:
         os.mkdir("./app/images/")
         recv_file.save(f"app/images/{recv_file.filename}")
+        img = Image.open(f"app/images/{recv_file.filename}")
+        img.thumbnail((600,400),Image.ANTIALIAS)
+        img.save(f"app/images/{recv_file.filename}")
     except FileExistsError:
         return "OK", 200
     return "OK", 200
